@@ -1,27 +1,45 @@
 /**
- * Direct EFT Gateway (Non-API Verification)
- * Standardized instructions for FNB and African Bank.
+ * EarnNexus Local Revenue Hub: Direct EFT
+ * Hardened for South African Banking Standards.
  */
 
-export const DirectEFTInstructions = {
-  fnb: {
-    account_name: "EarnNexus Business",
-    account_number: "62XXXXXXXXX",
-    branch_code: "250655",
-    bank: "First National Bank"
+interface BankAccount {
+  bankName: string;
+  accountHolder: string;
+  accountNumber: string;
+  branchCode: string;
+  accountType: string;
+}
+
+export const BankDetails: Record<string, BankAccount> = {
+  FNB: {
+    bankName: "First National Bank (FNB)",
+    accountHolder: process.env.FNB_ACC_HOLDER || "EarnNexus Business",
+    accountNumber: process.env.FNB_ACC_NUMBER || "62XXXXXXXXX",
+    branchCode: process.env.FNB_BRANCH_CODE || "250655",
+    accountType: "Business Cheque",
   },
-  african_bank: {
-    account_name: "EarnNexus Business",
-    account_number: "12XXXXXXXXX",
-    branch_code: "430000",
-    bank: "African Bank"
-  },
-  process: (orderId: string) => {
-    return `
-      PLEASE NOTE: 
-      1. Use Reference: ${orderId}
-      2. Send Proof of Payment to: payments@earnnexus.com
-      3. Access is automatically granted once our agent verifies the deposit.
-    `;
+  AFRICAN_BANK: {
+    bankName: "African Bank",
+    accountHolder: process.env.AFRICAN_BANK_ACC_HOLDER || "EarnNexus Business",
+    accountNumber: process.env.AFRICAN_BANK_ACC_NUMBER || "12XXXXXXXXX",
+    branchCode: process.env.AFRICAN_BANK_BRANCH_CODE || "430000",
+    accountType: "Transactional",
   }
 };
+
+export function generateEFTInstructions(orderId: string, amount: number, bank: 'FNB' | 'AFRICAN_BANK'): string {
+  const details = BankDetails[bank];
+  return `
+    --- PAYMENT INSTRUCTIONS ---
+    Please pay R${amount.toFixed(2)} to:
+    Bank: ${details.bankName}
+    Account Holder: ${details.accountHolder}
+    Account Number: ${details.accountNumber}
+    Branch Code: ${details.branchCode}
+    Reference: ${orderId}
+
+    IMPORTANT: Send Proof of Payment (PDF) to payments@earnnexus.com
+    Access will be granted once the funds reflect.
+  `;
+}
