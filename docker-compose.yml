@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # The Heart of EarnNexus
+  kernel:
+    build:
+      context: .
+      dockerfile: apps/kernel/Dockerfile
+    env_file: .env.production
+    restart: always
+    volumes:
+      - ./outputs/posters:/app/outputs/posters
+      - ./evolution_history.json:/app/evolution_history.json
+
+  # The Humanized Marketing Engine
+  content-engine:
+    build:
+      context: .
+      dockerfile: apps/kernel/Dockerfile # Reusing the same base
+    command: python apps/content-engine/scheduler.py
+    env_file: .env.production
+    restart: unless-stopped
+
+  # The Frontend Portal (ZAR/Global Dashboard)
+  portal:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./apps/portal:/app
+    command: sh -c "npm install && npm run dev"
+    ports:
+      - "3000:3000"
+    env_file: .env.production
+    depends_on:
+      - kernel
+
+networks:
+  default:
+    name: earnnexus-network
