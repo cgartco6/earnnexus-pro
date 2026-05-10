@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+venv/
+__pycache__/
+
+# Build outputs
+.next/
+dist/
+out/
+build/
+
+# Local Environment & Secrets
+.env
+.env.production
+.env.local
+.env.development.local
+
+# Database / Logs
+*.log
+evolution_history.json
+outputs/posters/*.png
+
+# OS metadata
+.DS_Store
+Thumbs.db
