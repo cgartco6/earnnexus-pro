@@ -1,11 +1,6 @@
-export const LegalBanner = () => {
-  return (
-    <div className="fixed bottom-0 w-full bg-slate-900 text-white p-4 text-xs">
-      <p>
-        By using EarnNexus, you agree to our <strong>POPIA</strong> and <strong>GDPR</strong> compliant 
-        data processing policies. We use AI to optimize your experience.
-      </p>
-      <button className="bg-[#39FF14] text-black px-4 py-1 mt-2 font-bold">ACCEPT</button>
-    </div>
-  );
-};
+export const CookieConsent = () => (
+  <div className="fixed bottom-0 bg-black text-[#39FF14] p-4 border-t border-[#39FF14]">
+    <p>This system is POPIA (South Africa) and GDPR compliant. By launching, you agree to secure data processing.</p>
+    <button onClick={() => window.close()}>Accept & Proceed</button>
+  </div>
+);
