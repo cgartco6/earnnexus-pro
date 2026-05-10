@@ -1,0 +1,24 @@
+// This is your data foundation
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  subscriptions Subscription[]
+  earnings      Earning[]
+  activeTrack   String    // 'AAA', 'CONTENT', or 'SAAS'
+}
+
+model Earning {
+  id        String   @id @default(cuid())
+  amount    Float    // In Rands (ZAR)
+  source    String   // e.g., "YouTube Affiliate" or "SaaS Sub"
+  createdAt DateTime @default(now())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Subscription {
+  id     String @id @default(cuid())
+  status String // 'active', 'canceled'
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
