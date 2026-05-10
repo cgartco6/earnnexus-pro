@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  kernel:
+    build: ./apps/kernel
+    restart: always
+  portal:
+    build: ./apps/portal
+    ports: ["3000:3000"]
+    env_file: .env.production
+  aaa-service:
+    build: ./apps/aaa-service
+    volumes: ["./proposals:/app/proposals"]
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
