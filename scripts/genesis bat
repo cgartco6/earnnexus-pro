@@ -1,0 +1,26 @@
+@echo off
+TITLE EarnNexus Genesis Launch - Windows 10 Pro
+echo ====================================================
+echo   EARNNEXUS: GENESIS LAUNCH (IMMORTAL EDITION)
+echo ====================================================
+
+:: Run Bootstrap via PowerShell
+powershell -ExecutionPolicy Bypass -File .\bootstrap.ps1
+if %ERRORLEVEL% NEQ 0 (
+    echo [ERROR] Bootstrap failed. Check the logs.
+    pause
+    exit /b %ERRORLEVEL%
+)
+
+:: Launch the Self-Healing Kernel and Modules
+echo [SYSTEM] Starting Docker Containers...
+docker-compose -f docker-compose.yml up -d --build
+
+:: Start the Repair Engine in the background
+echo [SYSTEM] Activating Self-Healing Repair Engine...
+start /min "EarnNexus-Repair" .\venv\Scripts\python.exe .\apps\kernel\repair_engine.py
+
+echo ====================================================
+echo   SUCCESS: SYSTEM IS LIVE AND SELF-HEALING
+echo ====================================================
+pause
