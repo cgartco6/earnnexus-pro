@@ -1,0 +1,21 @@
+{
+  "theme": "Genesis-Neon",
+  "layers": [
+    {
+      "name": "background",
+      "type": "dynamic-noise",
+      "colors": ["#000000", "#0b0b0b"]
+    },
+    {
+      "name": "pulse",
+      "type": "overlay",
+      "color": "#39FF14",
+      "opacity": 0.15
+    },
+    {
+      "name": "legal-footer",
+      "text": "EarnNexus Ltd | Cape Town | Non-Intrusive Inbound Marketing",
+      "position": "bottom-center"
+    }
+  ]
+}
